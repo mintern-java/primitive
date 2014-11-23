@@ -1,4 +1,4 @@
-## Primitive library
+## Java Primitive library
 
 Provides utility methods for functionality related to primitive types.
 Currently, the only functionality is the ability to sort primitive arrays
