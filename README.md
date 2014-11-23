@@ -1,4 +1,4 @@
-## Java Primitive library
+## Java Primitive
 
 Provides utility methods for functionality related to primitive types.
 Currently, the only functionality is the ability to sort primitive arrays
@@ -23,7 +23,7 @@ to your POM:
 </project>
 ```
 
-- [Sorting](#sorting)
+- [Sort arrays using primitive comparators](#sort-arrays-using-primitive-comparators)
     - [Sample usage](#sample-usage)
 - [Why not `Primitives`?](#why-not-primitives)
 - [Contributing](#contributing)
@@ -31,7 +31,7 @@ to your POM:
     - [Where are all the source files?](#where-are-all-the-source-files)
 - [Related projects](#related-projects)
 
-### Sorting
+### Sort arrays using primitive comparators
 
 The `Primitive.sort(...)` methods allow primitive arrays to be sorted using
 custom comparators (defined in `net.mintern.primitive.comparators`).  The
