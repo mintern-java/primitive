@@ -1,0 +1,4 @@
+/**
+ * Provides comparators for primitive values.
+ */
+package ${PACKAGE}.comparators;

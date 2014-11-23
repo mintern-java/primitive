@@ -1,0 +1,5 @@
+removeExtensions: ft
+data: {
+    PRIMITIVES: [boolean, byte, char, double, float, int, long, short]
+    PACKAGE: net.mintern.primitive
+}

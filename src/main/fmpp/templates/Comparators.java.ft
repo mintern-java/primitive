@@ -1,0 +1,53 @@
+<@pp.dropOutputFile />
+<#list PRIMITIVES as type>
+<#assign Type = type?capitalize>
+<#assign v = type[0]>
+<@pp.nestOutputFile name = "comparators/${Type}Comparator.java">
+package ${PACKAGE}.comparators;
+
+/**
+ * A comparison function that imposes total ordering on {@code ${type}} values.
+ * <p>
+ * This is a {@code @FunctionalInterface} even though it isn't declared as one,
+ * so that it can be used in Java 6+.
+ */
+public interface ${Type}Comparator {
+
+    /**
+     * Compares {@code ${v}1} and {@code ${v}2}. Returns a negative value to indicate
+     * that {@code ${v}1 < ${v}2}, 0 to indicate that {@code ${v}1 == ${v}2}, and a positive
+     * value to indicate that {@code ${v}1 > ${v}2}.
+     * <p>
+     * Implementations of this method must maintain the following invariants:
+     * <ul>
+     *  <li>{@code s(compare(x, y)) == -s(compare(y, x))}
+     *  <li>{@code s(compare(x, y)) == s(compare(y, z))} &rarr;
+     *      {@code s(compare(x, y)) == s(compare(x, z))} (transitivity)
+     *  <li>{@code compare(x, y) == 0} &rarr;
+     *      {@code s(compare(x, z)) == s(compare(y, z))} &forall; {@code z}
+     * </ul>
+     * <p>
+     * where {@code s(x)} is defined as follows:
+     * <ul>
+     *  <li>{@code x < 0}: -1
+     *  <li>{@code x == 0}: 0
+     *  <li>{@code x > 0}: 1
+     * </ul>
+<#if type = "float" || type = "double">
+     * <h3>Important Note</h3>
+     * A floating-point compare implementation must be careful to maintain
+     * total ordering, in particular when comparing -0.0, 0.0, @{code NaN},
+     * {@link ${Type}#NEGATIVE_INFINITY}, and {@link ${Type}#POSITIVE_INFINITY}
+     * values. See {@link ${Type}#compareTo(${Type})} for a valid example.
+</#if>
+     *
+     * @param ${v}1 the first ${type} to compare
+     * @param ${v}2 the second ${type} to compare
+     * @return a negative value, 0, or a positive value to indicate that
+     *      {@code ${v}1} is less than, equal to, or greater than {@code ${v}2},
+     *      respectively
+     */
+    int compare(${type} ${v}1, ${type} ${v}2);
+}
+</@pp.nestOutputFile>
+</#list>
