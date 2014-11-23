@@ -75,13 +75,13 @@ In the root directory, run `mvn install`. That will build everything.
 #### Where are all the source files?
 
 For this project, I used an ancient-but-solid (by modern standards) template
-language called [FreeMarker](http://freemarker.org) to provide a template that
-generates all of the source. A handy [FreeMarker PreProcessor
+language called [FreeMarker](http://freemarker.org) to provide templates that
+generate the source. A handy [FreeMarker PreProcessor
 (FMPP)](http://fmpp.sourceforge.net/index.html)&mdash;in conjunction with an
 [FMPP Maven plugin](https://code.google.com/p/freemarkerpp-maven-plugin/) that
 I came across on [Stack
-Overflow](http://stackoverflow.com/a/3925944/1237044)&mdash;turns that
-template into 18 Java source files.
+Overflow](http://stackoverflow.com/a/3925944/1237044)&mdash;turns those
+templates into 18 Java source files.
 
 The template configuration and source is in
 [`src/main/fmpp`](https://github.com/mintern-java/primitive/tree/master/src/main/fmpp).
