@@ -34,17 +34,17 @@ to your POM:
 ### Sorting
 
 The `Primitive.sort(...)` methods allow primitive arrays to be sorted using
-custom comparators (defined in `net.mintern.primitive.comparators`). Although
-it is built for Java 6+, the comparators are more convenient when used with
-Java 8 (as the sample usage illustrates).
-
-The sorting algorithm is stable, so when the comparator returns `0` for two
+custom comparators (defined in `net.mintern.primitive.comparators`).  The
+sorting algorithm is stable, so when the comparator returns `0` for two
 values, they are kept in the same relative position.
 
-The code is based on [TimSort](http://http://en.wikipedia.org/wiki/Timsort),
-the sorting algorithm originally developed for use in Python. This
-implementation is a shameless copy-paste-edit of Joshua Bloch's Java
-implementation used in `java.util.TimSort`.
+The code is based on [TimSort](http://en.wikipedia.org/wiki/Timsort), the
+sorting algorithm originally developed for use in Python. This implementation
+is a shameless copy-paste-edit of Joshua Bloch's Java implementation used in
+`java.util.TimSort`.
+
+Although this library is built for Java 6+, the comparators are more
+convenient when used with Java 8 (as the sample usage illustrates).
 
 #### Sample usage
 
