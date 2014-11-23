@@ -86,9 +86,7 @@ template into 18 Java source files.
 The template configuration and source is in
 [`src/main/fmpp`](https://github.com/mintern-java/primitive/tree/master/src/main/fmpp).
 
-### What's next?
+### Related projects
 
-I'll be using this library to build out modern `Pair` and `Triple` libraries,
-`Either` types, `Collection` and `Stream` (and `BiStream` and `TriStream`)
-enhancements, and more. If you like this library, keep an eye on the
-[mintern-java](https://github.com/mintern-java) organization for new ones!
+All of my Java libraries are available in the
+[mintern-java](https://github.com/mintern-java) organization.
