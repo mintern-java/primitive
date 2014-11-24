@@ -12,49 +12,6 @@ import ${PACKAGE}.comparators.${p?capitalize}Comparator;
  */
 public final class Primitive {
 
-    /**
-     * Sorts the given array so that all the {@code false} values are at the
-     * beginning.
-     *
-     * @param a the array to sort
-     * @throws NullPointerException if {@code a == null}
-     */
-    public static void sort(boolean[] a) {
-        sort(a, 0, a.length);
-    }
-
-    /**
-     * Sorts the indicated portion of the given array so that all the
-     * {@code false} values are at the beginning.
-     *
-     * @param a the array to sort
-     * @param fromIndex the index (inclusive) marking the beginning of the array
-     *      portion
-     * @param toIndex the index (exclusive) marking the end of the array portion
-     * @throws NullPointerException if {@code a == null}
-     * @throws ArrayIndexOutOfBoundsException if {@code fromIndex < 0} or
-     *      {@code toIndex > a.length}
-     * @throws IllegalArgumentException if {@code fromIndex > toIndex}
-     */
-    public static void sort(boolean[] a, int fromIndex, int toIndex) {
-        checkBounds(a.length, fromIndex, toIndex);
-        while (fromIndex < toIndex && !a[fromIndex]) {
-            fromIndex++;
-        }
-        if (fromIndex == toIndex) {
-            // all false values
-            return;
-        }
-        int nextFalse = fromIndex;
-        for (int i = fromIndex + 1; i < toIndex; i++) {
-            if (!a[i]) {
-                a[nextFalse] = false;
-                a[i] = true;
-                nextFalse++;
-            }
-        }
-    }
-
 <#list PRIMITIVES as type>
 <#assign Type = type?capitalize>
 <#assign comparator = Type + "Comparator">
@@ -94,14 +51,14 @@ public final class Primitive {
      */
     public static void sort(${type}[] a, int fromIndex, int toIndex, ${comparator} c) {
         if (c == null) {
-<#if type = "boolean">
-            sort(a, fromIndex, toIndex);
-<#else>
             Arrays.sort(a, fromIndex, toIndex);
-</#if>
         } else {
             checkBounds(a.length, fromIndex, toIndex);
-            ${Type}TimSort.sort(a, fromIndex, toIndex, c, null, 0, 0);
+<#if type = "byte">
+            DualPivotQuicksort.sort(a, fromIndex, toIndex - 1, c);
+<#else>
+            DualPivotQuicksort.sort(a, fromIndex, toIndex - 1, null, 0, 0, c);
+</#if>
         }
     }
 
