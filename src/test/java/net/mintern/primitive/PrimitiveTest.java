@@ -230,28 +230,28 @@ public class PrimitiveTest {
     private static final class ReverseShortComparator implements ShortComparator {
         @Override
         public final int compare(short d1, short d2) {
-            return Short.compare(d2, d1);
+            return d1 < d2 ? 1 : d1 == d2 ? 0 : -1;
         }
     }
 
     private static final class ReverseCharComparator implements CharComparator {
         @Override
         public final int compare(char d1, char d2) {
-            return Character.compare(d2, d1);
+            return d1 < d2 ? 1 : d1 == d2 ? 0 : -1;
         }
     }
 
     private static final class ReverseIntComparator implements IntComparator {
         @Override
         public final int compare(int d1, int d2) {
-            return Integer.compare(d2, d1);
+            return d1 < d2 ? 1 : d1 == d2 ? 0 : -1;
         }
     }
 
     private static final class ReverseLongComparator implements LongComparator {
         @Override
         public final int compare(long d1, long d2) {
-            return Long.compare(d2, d1);
+            return d1 < d2 ? 1 : d1 == d2 ? 0 : -1;
         }
     }
 
