@@ -15,7 +15,7 @@ to your POM:
         <dependency>
             <groupId>net.mintern</groupId>
             <artifactId>primitive</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
         ...
     </dependencies>
@@ -43,6 +43,15 @@ sorting algorithm originally developed for use in Python. This implementation
 is a shameless copy-paste-edit of Joshua Bloch's Java implementation used in
 `java.util.TimSort`.
 
+Thanks to a contribution from [Benedikt
+Waldvogel](https://github.com/bwaldvogel), the library now includes two
+separate sorting algorithms. The new algorithm is based on Java's default
+primitives `Arrays.sort` implementation, a [Dual-Pivot
+Quicksort](http://en.wikipedia.org/wiki/Quicksort#Variants). This algorithm is
+not stable, but for some inputs, it may be up to twice as fast. The existing
+`Primitive.sort` methods remain stable, but new methods have been added to
+allow the new, unstable alternative to be used, instead.
+
 Although this library is built for Java 6+, the comparators are more
 convenient when used with Java 8 (as the sample usage illustrates).
 
@@ -67,6 +76,7 @@ for a name with fewer collisions.
 ### Contributing
 
 I will happily accept Pull Requests. If you have any questions, ask away.
+Please keep changes to a minimum; do not make gratuitous style changes.
 
 #### Building
 
