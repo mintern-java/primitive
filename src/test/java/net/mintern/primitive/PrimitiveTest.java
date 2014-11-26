@@ -1,6 +1,7 @@
 package net.mintern.primitive;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -19,18 +20,33 @@ import org.junit.Test;
 
 public class PrimitiveTest {
 
-    private static final int[] ARRAY_SIZES_TO_TEST = new int[] { 0, 1, 2, 4, 8, 20, 100, 300, 5000, 50000 };
+    final Random rng = new Random(1234567890);
 
-    private static final int REPEAT_WITH_RANDOMNESS = 5;
+    final int[] ARRAY_SIZES_TO_TEST = { 0, 1, 2, 4, 8, 20, 100, 300, 5000, 50000 };
 
-    String[] names = { "empty", "short", "short reversed", "all byte values", "all byte values reversed", "999 0s",
-            "999 random values", "one item" };
+    final int REPEAT_WITH_RANDOMNESS = 5;
 
-    byte[][] bytes = { {}, { -128, -100, -78, -55, -24, -1, 3, 6, 25, 84, 97, 99, 100, 127 },
-            { 127, 100, 99, 97, 84, 25, 6, 3, -1, -24, -55, -78, -100, -128 }, new byte[256], new byte[256],
-            new byte[999], new byte[999], { 42 } };
+    final String[] names = {
+        "empty",
+        "short",
+        "short reversed",
+        "all byte values",
+        "all byte values reversed",
+        "999 0s",
+        "999 random values",
+        "one item"
+    };
 
-    Random rng = new Random(1234567890);
+    final byte[][] bytes = {
+        {},
+        { -128, -100, -78, -55, -24, -1, 3, 6, 25, 84, 97, 99, 100, 127 },
+        { 127, 100, 99, 97, 84, 25, 6, 3, -1, -24, -55, -78, -100, -128 },
+        new byte[256],
+        new byte[256],
+        new byte[999],
+        new byte[999],
+        { 42 }
+    };
 
     {
         // bytes[3]: all byte values
@@ -49,13 +65,33 @@ public class PrimitiveTest {
     }
 
     @Test
+    public void testBooleanSort() {
+        boolean[] a = new boolean[999];
+        int falseCount = 0;
+        for (int i = 0; i < 999; i++) {
+            if (!(a[i] = bytes[6][i] % 2 == 0)) {
+                falseCount++;
+            }
+        }
+        Primitive.sort(a);
+        for (int i = 0; i < falseCount; i++) {
+            assertFalse(a[i]);
+        }
+        for (int i = falseCount; i < 999; i++) {
+            assertTrue(a[i]);
+        }
+    }
+
+    @Test
     public void testBytesNoBoundsNullComparator() {
         for (int i = 0; i < bytes.length; i++) {
-            String name = names[i];
-            byte[] a = Arrays.copyOf(bytes[i], bytes[i].length);
-            Primitive.sort(a, null);
-            for (int j = 1; j < a.length; j++) {
-                assertTrue(name, a[j - 1] <= a[j]);
+            for (boolean stable: new boolean[]{ false, true }) {
+                String name = names[i] + (stable ? ", stable" : "");
+                byte[] a = Arrays.copyOf(bytes[i], bytes[i].length);
+                Primitive.sort(a, null, stable);
+                for (int j = 1; j < a.length; j++) {
+                    assertTrue(name, a[j - 1] <= a[j]);
+                }
             }
         }
     }
@@ -78,16 +114,18 @@ public class PrimitiveTest {
     @Test
     public void testBytesNoBoundsNaturalComparator() {
         for (int i = 0; i < bytes.length; i++) {
-            String name = names[i];
-            byte[] a = Arrays.copyOf(bytes[i], bytes[i].length);
-            Primitive.sort(a, new ByteComparator() {
-                @Override
-                public int compare(byte b1, byte b2) {
-                    return b1 < b2 ? -1 : b1 == b2 ? 0 : 1;
+            for (boolean stable: new boolean[]{ false, true }) {
+                String name = names[i] + (stable ? ", stable" : "");
+                byte[] a = Arrays.copyOf(bytes[i], bytes[i].length);
+                Primitive.sort(a, new ByteComparator() {
+                    @Override
+                    public int compare(byte b1, byte b2) {
+                        return b1 < b2 ? -1 : b1 == b2 ? 0 : 1;
+                    }
+                });
+                for (int j = 1; j < a.length; j++) {
+                    assertTrue(name, a[j - 1] <= a[j]);
                 }
-            });
-            for (int j = 1; j < a.length; j++) {
-                assertTrue(name, a[j - 1] <= a[j]);
             }
         }
     }
@@ -100,15 +138,16 @@ public class PrimitiveTest {
                 for (int i = 0; i < array.length; i++) {
                     array[i] = (char) rng.nextInt(Character.MAX_CODE_POINT);
                 }
+                for (boolean stable: new boolean[]{ false, true }) {
+                    char[] actual = array.clone();
+                    Primitive.sort(actual, new ReverseCharComparator(), stable);
 
-                char[] actual = array.clone();
-                Primitive.sort(actual, new ReverseCharComparator());
+                    char[] expected = array.clone();
+                    Arrays.sort(expected);
+                    reverse(expected);
 
-                char[] expected = array.clone();
-                Arrays.sort(expected);
-                reverse(expected);
-
-                Assert.assertArrayEquals(actual, expected);
+                    Assert.assertArrayEquals(actual, expected);
+                }
             }
         }
     }
@@ -124,15 +163,16 @@ public class PrimitiveTest {
                         array[i] *= -1;
                     }
                 }
+                for (boolean stable: new boolean[]{ false, true }) {
+                    short[] actual = array.clone();
+                    Primitive.sort(actual, new ReverseShortComparator(), stable);
 
-                short[] actual = array.clone();
-                Primitive.sort(actual, new ReverseShortComparator());
+                    short[] expected = array.clone();
+                    Arrays.sort(expected);
+                    reverse(expected);
 
-                short[] expected = array.clone();
-                Arrays.sort(expected);
-                reverse(expected);
-
-                Assert.assertArrayEquals(actual, expected);
+                    Assert.assertArrayEquals(actual, expected);
+                }
             }
         }
     }
@@ -148,15 +188,16 @@ public class PrimitiveTest {
                         array[i] *= -1;
                     }
                 }
+                for (boolean stable: new boolean[]{ false, true }) {
+                    int[] actual = array.clone();
+                    Primitive.sort(actual, new ReverseIntComparator(), stable);
 
-                int[] actual = array.clone();
-                Primitive.sort(actual, new ReverseIntComparator());
+                    int[] expected = array.clone();
+                    Arrays.sort(expected);
+                    reverse(expected);
 
-                int[] expected = array.clone();
-                Arrays.sort(expected);
-                reverse(expected);
-
-                Assert.assertArrayEquals(actual, expected);
+                    Assert.assertArrayEquals(actual, expected);
+                }
             }
         }
     }
@@ -172,15 +213,16 @@ public class PrimitiveTest {
                         array[i] *= -1;
                     }
                 }
+                for (boolean stable: new boolean[]{ false, true }) {
+                    long[] actual = array.clone();
+                    Primitive.sort(actual, new ReverseLongComparator(), stable);
 
-                long[] actual = array.clone();
-                Primitive.sort(actual, new ReverseLongComparator());
+                    long[] expected = array.clone();
+                    Arrays.sort(expected);
+                    reverse(expected);
 
-                long[] expected = array.clone();
-                Arrays.sort(expected);
-                reverse(expected);
-
-                Assert.assertArrayEquals(actual, expected);
+                    Assert.assertArrayEquals(actual, expected);
+                }
             }
         }
     }
@@ -193,15 +235,16 @@ public class PrimitiveTest {
                 for (int i = 0; i < array.length; i++) {
                     array[i] = rng.nextFloat();
                 }
+                for (boolean stable: new boolean[]{ false, true }) {
+                    float[] actual = array.clone();
+                    Primitive.sort(actual, new ReverseFloatComparator(), stable);
 
-                float[] actual = array.clone();
-                Primitive.sort(actual, new ReverseFloatComparator());
+                    float[] expected = array.clone();
+                    Arrays.sort(expected);
+                    reverse(expected);
 
-                float[] expected = array.clone();
-                Arrays.sort(expected);
-                reverse(expected);
-
-                Assert.assertArrayEquals(actual, expected, 0.0f);
+                    Assert.assertArrayEquals(actual, expected, 0.0f);
+                }
             }
         }
     }
@@ -214,15 +257,16 @@ public class PrimitiveTest {
                 for (int i = 0; i < array.length; i++) {
                     array[i] = rng.nextDouble();
                 }
+                for (boolean stable: new boolean[]{ false, true }) {
+                    double[] actual = array.clone();
+                    Primitive.sort(actual, new ReverseDoubleComparator(), stable);
 
-                double[] actual = array.clone();
-                Primitive.sort(actual, new ReverseDoubleComparator());
+                    double[] expected = array.clone();
+                    Arrays.sort(expected);
+                    reverse(expected);
 
-                double[] expected = array.clone();
-                Arrays.sort(expected);
-                reverse(expected);
-
-                Assert.assertTrue(Arrays.equals(actual, expected));
+                    Assert.assertTrue(Arrays.equals(actual, expected));
+                }
             }
         }
     }
@@ -271,26 +315,6 @@ public class PrimitiveTest {
             return Double.compare(d2, d1);
         }
 
-    }
-
-    private void reverse(boolean[] array) {
-        for (int i = 0; i < array.length / 2; i++) {
-            // swap the elements
-            boolean temp = array[i];
-            array[i] = array[array.length - (i + 1)];
-            array[array.length - (i + 1)] = temp;
-        }
-    }
-
-    private void sort(boolean[] array) {
-        Boolean[] array2 = new Boolean[array.length];
-        for (int i = 0; i < array.length; i++) {
-            array2[i] = array[i];
-        }
-        Arrays.sort(array2);
-        for (int i = 0; i < array.length; i++) {
-            array[i] = array2[i].booleanValue();
-        }
     }
 
     private void reverse(int[] array) {
@@ -346,5 +370,4 @@ public class PrimitiveTest {
             array[array.length - (i + 1)] = temp;
         }
     }
-
 }
