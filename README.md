@@ -91,7 +91,7 @@ generate the source. A handy [FreeMarker PreProcessor
 [FMPP Maven plugin](https://code.google.com/p/freemarkerpp-maven-plugin/) that
 I came across on [Stack
 Overflow](http://stackoverflow.com/a/3925944/1237044)&mdash;turns those
-templates into 18 Java source files.
+templates into the Java source files.
 
 The template configuration and source is in
 [`src/main/fmpp`](https://github.com/mintern-java/primitive/tree/master/src/main/fmpp).
