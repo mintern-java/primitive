@@ -6,7 +6,7 @@
 
     <groupId>net.mintern</groupId>
     <artifactId>primitive</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <name>Primitive</name>
     <description>Utility methods for primitive types</description>
     <url>http://mintern.net/primitive</url>
