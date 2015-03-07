@@ -34,23 +34,21 @@ to your POM:
 ### Sort arrays using primitive comparators
 
 The `Primitive.sort(...)` methods allow primitive arrays to be sorted using
-custom comparators (defined in `net.mintern.primitive.comparators`).  The
-sorting algorithm is stable, so when the comparator returns `0` for two
-values, they are kept in the same relative position.
+custom comparators (defined in `net.mintern.primitive.comparators`). This
+library provides both stable and unstable sorting algorithms. When the stable
+algorithm is used, it keeps two values in the same relative position when the
+comparator returns `0` for those two values.
 
-The code is based on [TimSort](http://en.wikipedia.org/wiki/Timsort), the
-sorting algorithm originally developed for use in Python. This implementation
-is a shameless copy-paste-edit of Joshua Bloch's Java implementation used in
-`java.util.TimSort`.
+The unstable algorithm is based on Java's default primitives `Arrays.sort`
+implementation, a [Dual-Pivot
+Quicksort](http://en.wikipedia.org/wiki/Quicksort#Variants). For some inputs,
+it may be up to twice as fast as stable sorting.
 
-Thanks to a contribution from [Benedikt
-Waldvogel](https://github.com/bwaldvogel), the library now includes two
-separate sorting algorithms. The new algorithm is based on Java's default
-primitives `Arrays.sort` implementation, a [Dual-Pivot
-Quicksort](http://en.wikipedia.org/wiki/Quicksort#Variants). This algorithm is
-not stable, but for some inputs, it may be up to twice as fast. The existing
-`Primitive.sort` methods remain stable, but new methods have been added to
-allow the new, unstable alternative to be used, instead.
+The stable algorithm is based on
+[TimSort](http://en.wikipedia.org/wiki/Timsort), the sorting algorithm
+originally developed for use in Python. The implementation in this library is
+a shameless copy-paste-edit of the latest JDK version of Joshua Bloch's
+`java.util.TimSort` implementation.
 
 Although this library is built for Java 6+, the comparators are more
 convenient when used with Java 8 (as the sample usage illustrates).
