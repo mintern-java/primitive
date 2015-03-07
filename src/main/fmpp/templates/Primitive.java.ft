@@ -118,7 +118,7 @@ public final class Primitive {
             BooleanTimSort.sort(a, fromIndex, toIndex, c, null, 0, 0);
         }
 <#else>
-        sort(a, fromIndex, toIndex, c, false);
+        sort(a, fromIndex, toIndex, c, true);
 </#if>
     }
 <#if type != "boolean">
