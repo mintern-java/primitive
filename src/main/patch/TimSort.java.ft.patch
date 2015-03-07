@@ -1,0 +1,126 @@
+0a1,6
+> <@pp.dropOutputFile />
+> <#list PRIMITIVES as type>
+> <#assign Type = type?capitalize>
+> <#assign Sort = Type + "TimSort">
+> <#assign Cmp = Type + "Comparator">
+> <@pp.nestOutputFile name = "${Sort}.java">
+25a32
+> package ${PACKAGE};
+27c34
+< package java.util;
+---
+> import ${PACKAGE}.comparators.${Cmp};
+29a37,43
+>  * This class provides a specialization of {@link java.util.TimSort} for ${type}
+>  * arrays. This code is shamelessly copied, with Object references changed to
+>  * ${type} instead. Everything else (even some now inaccurate comments) is left
+>  * as Josh Bloch originally wrote it.
+>  *
+>  * @author Brandon Mintern
+>  *
+62c76
+< class TimSort<T> {
+---
+> class ${Sort} {
+85c99
+<     private final T[] a;
+---
+>     private final ${type}[] a;
+90c104
+<     private final Comparator<? super T> c;
+---
+>     private final ${Cmp} c;
+119c133
+<     private T[] tmp;
+---
+>     private ${type}[] tmp;
+146c160
+<     private TimSort(T[] a, Comparator<? super T> c, T[] work, int workBase, int workLen) {
+---
+>     private ${Sort}(${type}[] a, ${Cmp} c, ${type}[] work, int workBase, int workLen) {
+155,157c169
+<             @SuppressWarnings({"unchecked", "UnnecessaryLocalVariable"})
+<             T[] newArray = (T[])java.lang.reflect.Array.newInstance
+<                 (a.getClass().getComponentType(), tlen);
+---
+>             ${type}[] newArray = new ${type}[tlen];
+206,207c218,219
+<     static <T> void sort(T[] a, int lo, int hi, Comparator<? super T> c,
+<                          T[] work, int workBase, int workLen) {
+---
+>     static void sort(${type}[] a, int lo, int hi, ${Cmp} c,
+>                          ${type}[] work, int workBase, int workLen) {
+226c238
+<         TimSort<T> ts = new TimSort<>(a, c, work, workBase, workLen);
+---
+>         ${Sort} ts = new ${Sort}(a, c, work, workBase, workLen);
+273,274c285,286
+<     private static <T> void binarySort(T[] a, int lo, int hi, int start,
+<                                        Comparator<? super T> c) {
+---
+>     private static void binarySort(${type}[] a, int lo, int hi, int start,
+>                                        ${Cmp} c) {
+279c291
+<             T pivot = a[start];
+---
+>             ${type} pivot = a[start];
+343,344c355,356
+<     private static <T> int countRunAndMakeAscending(T[] a, int lo, int hi,
+<                                                     Comparator<? super T> c) {
+---
+>     private static int countRunAndMakeAscending(${type}[] a, int lo, int hi,
+>                                                     ${Cmp} c) {
+370c382
+<     private static void reverseRange(Object[] a, int lo, int hi) {
+---
+>     private static void reverseRange(${type}[] a, int lo, int hi) {
+373c385
+<             Object t = a[lo];
+---
+>             ${type} t = a[lo];
+533,534c545,546
+<     private static <T> int gallopLeft(T key, T[] a, int base, int len, int hint,
+<                                       Comparator<? super T> c) {
+---
+>     private static int gallopLeft(${type} key, ${type}[] a, int base, int len, int hint,
+>                                       ${Cmp} c) {
+603,604c615,616
+<     private static <T> int gallopRight(T key, T[] a, int base, int len,
+<                                        int hint, Comparator<? super T> c) {
+---
+>     private static int gallopRight(${type} key, ${type}[] a, int base, int len,
+>                                        int hint, ${Cmp} c) {
+681,682c693,694
+<         T[] a = this.a; // For performance
+<         T[] tmp = ensureCapacity(len1);
+---
+>         ${type}[] a = this.a; // For performance
+>         ${type}[] tmp = ensureCapacity(len1);
+700c712
+<         Comparator<? super T> c = this.c;  // Use local variable for performance
+---
+>         ${Cmp} c = this.c;  // Use local variable for performance
+797,798c809,810
+<         T[] a = this.a; // For performance
+<         T[] tmp = ensureCapacity(len2);
+---
+>         ${type}[] a = this.a; // For performance
+>         ${type}[] tmp = ensureCapacity(len2);
+820c832
+<         Comparator<? super T> c = this.c;  // Use local variable for performance
+---
+>         ${Cmp} c = this.c;  // Use local variable for performance
+912c924
+<     private T[] ensureCapacity(int minCapacity) {
+---
+>     private ${type}[] ensureCapacity(int minCapacity) {
+928,930c940
+<             @SuppressWarnings({"unchecked", "UnnecessaryLocalVariable"})
+<             T[] newArray = (T[])java.lang.reflect.Array.newInstance
+<                 (a.getClass().getComponentType(), newSize);
+---
+>             ${type}[] newArray = new ${type}[newSize];
+937a948,949
+> </@pp.nestOutputFile>
+> </#list>
