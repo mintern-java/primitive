@@ -6,7 +6,7 @@
 
     <groupId>net.mintern</groupId>
     <artifactId>primitive</artifactId>
-    <version>1.2</version>
+    <version>1.2.1</version>
     <name>Primitive</name>
     <description>Utility methods for primitive types</description>
     <url>http://mintern.net/primitive</url>
@@ -113,17 +113,6 @@
                 <configuration>
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.5</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
@@ -154,16 +143,62 @@
             <id>release</id>
             <build>
                 <plugins>
+                    <!--
+                        The maven-source-plugin was not correctly packaging the source (refer to
+                        <http://stackoverflow.com/q/29159749/1237044>). We can build the source JAR
+                        ourselves without too much trouble, but this confuses maven-install-plugin's
+                        default-install (it installs this in place of the class JAR). Disabling the
+                        default-install in favor of a custom configuration fixes that problem, but
+                        then nexus-staging-maven-plugin suffers from the same issue.
+
+                        Instead, we use build-helper-maven-plugin below to attach the sources as an
+                        artifact, but the install plugin *still* installs this JAR in place of the
+                        class JAR. Changing the build-sources phase to prepare-package alleviates
+                        that issue and everything builds correctly, though in a much hackier way
+                        than I would prefer.
+                    -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>2.4</version>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>2.5</version>
+                        <executions>
+                            <execution>
+                                <id>build-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <phase>prepare-package</phase>
+                                <configuration>
+                                    <classesDirectory>${project.build.directory}/generated-sources</classesDirectory>
+                                    <finalName>${project.build.finalName}-sources</finalName>
+                                    <excludes>
+                                        <!-- the generated-sources directory includes an empty
+                                             annotations directory that we don't need -->
+                                        <exclude>annotations</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>1.9.1</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
                                 <goals>
-                                    <goal>jar-no-fork</goal>
+                                    <goal>attach-artifact</goal>
                                 </goals>
+                                <phase>prepare-package</phase>
+                                <configuration>
+                                    <artifacts>
+                                        <artifact>
+                                            <file>${project.build.directory}/${project.build.finalName}-sources.jar</file>
+                                            <classifier>sources</classifier>
+                                        </artifact>
+                                    </artifacts>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>

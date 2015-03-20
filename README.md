@@ -15,7 +15,7 @@ to your POM:
         <dependency>
             <groupId>net.mintern</groupId>
             <artifactId>primitive</artifactId>
-            <version>1.2</version>
+            <version>1.2.1</version>
         </dependency>
         ...
     </dependencies>
@@ -39,16 +39,16 @@ library provides both stable and unstable sorting algorithms. When the stable
 algorithm is used, it keeps two values in the same relative position when the
 comparator returns `0` for those two values.
 
-The unstable algorithm is based on Java's default primitives `Arrays.sort`
-implementation, a [Dual-Pivot
-Quicksort](http://en.wikipedia.org/wiki/Quicksort#Variants). For some inputs,
-it may be up to twice as fast as stable sorting.
-
 The stable algorithm is based on
 [TimSort](http://en.wikipedia.org/wiki/Timsort), the sorting algorithm
 originally developed for use in Python. The implementation in this library is
 a shameless copy-paste-edit of the latest JDK version of Joshua Bloch's
 `java.util.TimSort` implementation.
+
+The unstable algorithm is based on Java's default primitives `Arrays.sort`
+implementation, a [Dual-Pivot
+Quicksort](http://en.wikipedia.org/wiki/Quicksort#Variants). For some inputs,
+it may be up to twice as fast as stable sorting.
 
 Although this library is built for Java 6+, the comparators are more
 convenient when used with Java 8 (as the sample usage illustrates).
