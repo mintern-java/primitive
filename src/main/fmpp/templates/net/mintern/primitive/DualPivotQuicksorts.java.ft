@@ -3,11 +3,30 @@
 <#assign Type = type?capitalize>
 <#assign Sort = Type + "DualPivotQuicksort">
 <#assign Cmp = Type + "Comparator">
-<#assign isFloat = (type = "float" || type = "double")>
 <@pp.nestOutputFile name = "${Sort}.java">
 /*
- * Copyright (c) 2009, 2013, Oracle and/or its affiliates. All rights reserved.
- * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Copyright (c) 2009, 2015, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
  */
 package net.mintern.primitive;
 
@@ -49,11 +68,6 @@ public final class ${Sort} {
     private static final int MAX_RUN_COUNT = 67;
 
     /**
-     * The maximum length of run in merge sort.
-     */
-    private static final int MAX_RUN_LENGTH = 33;
-
-    /**
      * If the length of an array to be sorted is less than this
      * constant, Quicksort is used in preference to merge sort.
      */
@@ -93,20 +107,24 @@ public final class ${Sort} {
 
         // Check if the array is nearly sorted
         for (int k = left; k < right; run[count] = k) {
+            // Equal items in the beginning of the sequence
+            while (k < right && c.compare(a[k], a[k + 1]) == 0)
+                k++;
+            if (k == right) break;  // Sequence finishes with equal items
             if (c.compare(a[k], a[k + 1]) < 0) { // ascending
                 while (++k <= right && c.compare(a[k - 1], a[k]) <= 0);
             } else if (c.compare(a[k], a[k + 1]) > 0) { // descending
                 while (++k <= right && c.compare(a[k - 1], a[k]) >= 0);
+                // Transform into an ascending sequence
                 for (int lo = run[count] - 1, hi = k; ++lo < --hi; ) {
                     ${type} t = a[lo]; a[lo] = a[hi]; a[hi] = t;
                 }
-            } else { // equal
-                for (int m = MAX_RUN_LENGTH; ++k <= right && c.compare(a[k - 1], a[k]) == 0; ) {
-                    if (--m == 0) {
-                        sort(a, left, right, true, c);
-                        return;
-                    }
-                }
+            }
+
+            // Merge a transformed descending sequence followed by an
+            // ascending sequence
+            if (run[count] > left && c.compare(a[run[count]], a[run[count] - 1]) >= 0) {
+                count--;
             }
 
             /*
@@ -123,7 +141,7 @@ public final class ${Sort} {
         // Implementation note: variable "right" is increased by 1.
         if (run[count] == right++) { // The last run contains one element
             run[++count] = right;
-        } else if (count == 1) { // The array is already sorted
+        } else if (count <= 1) { // The array is already sorted
             return;
         }
 
@@ -287,7 +305,8 @@ public final class ${Sort} {
         int less  = left;  // The index of the first element of center part
         int great = right; // The index before the first element of right part
 
-        if (c.compare(a[e1], a[e2]) != 0 && c.compare(a[e2], a[e3]) != 0 && c.compare(a[e3], a[e4]) != 0 && c.compare(a[e4], a[e5]) != 0) {
+        if (c.compare(a[e1], a[e2]) != 0 && c.compare(a[e2], a[e3]) != 0
+                && c.compare(a[e3], a[e4]) != 0 && c.compare(a[e4], a[e5]) != 0) {
             /*
              * Use the second and fourth of the five sorted elements as pivots.
              * These values are inexpensive approximations of the first and
@@ -422,18 +441,12 @@ public final class ${Sort} {
                         if (c.compare(a[great], pivot1) == 0) { // a[great] < pivot2
                             a[k] = a[less];
                             /*
-                             * Even though a[great] equals to pivot1, the
-                             * assignment a[less] = pivot1 may be incorrect,
-                             * if a[great] and pivot1 are floating-point zeros
-                             * of different signs. Therefore in float and
-                             * double sorting methods we have to use more
-                             * accurate assignment a[less] = a[great].
+                             * Even though a[great] compares equal to pivot1,
+                             * the assignment a[less] = pivot1 may be
+                             * incorrect since a[great] and pivot1 may be
+                             * different values.
                              */
-<#if isFloat>
                             a[less] = a[great];
-<#else>
-                            a[less] = pivot1;
-</#if>
                             ++less;
                         } else { // pivot1 < a[great] < pivot2
                             a[k] = a[great];
@@ -493,18 +506,11 @@ public final class ${Sort} {
                         ++less;
                     } else { // a[great] == pivot
                         /*
-                         * Even though a[great] equals to pivot, the
-                         * assignment a[k] = pivot may be incorrect,
-                         * if a[great] and pivot are floating-point
-                         * zeros of different signs. Therefore in float
-                         * and double sorting methods we have to use
-                         * more accurate assignment a[k] = a[great].
+                         * Even though a[great] compares equal to pivot, the
+                         * assignment a[k] = pivot may be incorrect since
+                         * a[great] and pivot may be different values.
                          */
-<#if isFloat>
                         a[k] = a[great];
-<#else>
-                        a[k] = pivot;
-</#if>
                     }
                     a[great] = ak;
                     --great;
