@@ -1,3 +1,7 @@
+/*
+ * Copyright 2016 Brandon Mintern <brandon@mintern.net>.
+ * License: GPLv2+CE <http://openjdk.java.net/legal/gplv2+ce.html>
+ */
 package net.mintern.primitive;
 
 import static org.junit.Assert.assertArrayEquals;

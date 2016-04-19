@@ -3,6 +3,10 @@
 <#assign Type = type?capitalize>
 <#assign v = type[0]>
 <@pp.nestOutputFile name = "comparators/${Type}Comparator.java">
+/*
+ * Copyright 2016 Brandon Mintern <brandon@mintern.net>.
+ * License: GPLv2+CE <http://openjdk.java.net/legal/gplv2+ce.html>
+ */
 package ${PACKAGE}.comparators;
 
 /**
