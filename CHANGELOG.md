@@ -1,3 +1,12 @@
+### 1.2.3 (2016-04-28)
+
+#### Fixed
+- [JDK9 DualPivotQuicksort "optimization" is buggy](https://github.com/mintern-java/primitive/issues/6)
+  (upstream: <https://bugs.openjdk.java.net/browse/JDK-8154049>)
+
+#### Reverted
+- Reverts "Performance improvement" introduced by 1.2.2 since it was buggy.
+
 ### 1.2.2 (2016-04-13)
 
 #### Fixed

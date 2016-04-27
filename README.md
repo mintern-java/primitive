@@ -15,7 +15,7 @@ to your POM:
         <dependency>
             <groupId>net.mintern</groupId>
             <artifactId>primitive</artifactId>
-            <version>1.2.2</version>
+            <version>1.2.3</version>
         </dependency>
         ...
     </dependencies>
