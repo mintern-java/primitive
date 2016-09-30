@@ -113,9 +113,10 @@ public final class ${Sort} {
 
         // Check if the array is nearly sorted
         for (int k = left; k < right; run[count] = k) {
-            if (c.compare(a[k], a[k + 1]) < 0) { // ascending
+            int cmp = c.compare(a[k], a[k + 1]);
+            if (cmp < 0) { // ascending
                 while (++k <= right && c.compare(a[k - 1], a[k]) <= 0);
-            } else if (c.compare(a[k], a[k + 1]) > 0) { // descending
+            } else if (cmp > 0) { // descending
                 while (++k <= right && c.compare(a[k - 1], a[k]) >= 0);
                 for (int lo = run[count] - 1, hi = k; ++lo < --hi; ) {
                     ${type} t = a[lo]; a[lo] = a[hi]; a[hi] = t;
@@ -490,11 +491,12 @@ public final class ${Sort} {
              * Pointer k is the first index of ?-part.
              */
             for (int k = less; k <= great; ++k) {
-                if (c.compare(a[k], pivot) == 0) {
+                int cmp = c.compare(a[k], pivot);
+                if (cmp == 0) {
                     continue;
                 }
                 ${type} ak = a[k];
-                if (c.compare(ak, pivot) < 0) { // Move a[k] to left part
+                if (cmp < 0) { // Move a[k] to left part
                     a[k] = a[less];
                     a[less] = ak;
                     ++less;
