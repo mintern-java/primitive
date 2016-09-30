@@ -147,7 +147,7 @@ public final class Primitive {
     }
 
     /**
-     * Sorts the indicated porition of the given array by the given comparator.
+     * Sorts the indicated portion of the given array by the given comparator.
      * When {@code stable} is {@code true}, the sorting algorithm will result in
      * a stable sort, so two items that compare to 0 will be kept in the same
      * order when the sort is complete. When {@code false}, no such guarantees

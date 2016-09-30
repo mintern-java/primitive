@@ -333,7 +333,7 @@ public class PrimitiveTest {
         IntComparator naturalComparator = new IntComparator() {
             @Override
             public int compare(int i1, int i2) {
-                return Integer.compare(i1, i2);
+                return i1 < i2 ? -1 : i1 == i2 ? 0 : 1;
             }
         };
 
