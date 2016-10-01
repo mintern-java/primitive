@@ -1,8 +1,7 @@
 ## Java Primitive
 
 Provides utility methods for functionality related to primitive types.
-Currently, the only functionality is the ability to sort primitive arrays
-using custom comparators.
+This currently includes sorting and searching based on custom comparators.
 
 To include the library in your project (Java 6+ supported), add the following
 to your POM:
