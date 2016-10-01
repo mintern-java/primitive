@@ -15,7 +15,7 @@ to your POM:
         <dependency>
             <groupId>net.mintern</groupId>
             <artifactId>primitive</artifactId>
-            <version>1.2.3</version>
+            <version>1.3</version>
         </dependency>
         ...
     </dependencies>
@@ -24,11 +24,12 @@ to your POM:
 ```
 
 - [Sort arrays using primitive comparators](#sort-arrays-using-primitive-comparators)
-    - [Sample usage](#sample-usage)
-- [Why not `Primitives`?](#why-not-primitives)
+- [Binary search using primitive comparators](#binary-search-using-primitive-comparators)
+- [Sample usage](#sample-usage)
 - [Contributing](#contributing)
     - [Building](#building)
     - [Where are all the source files?](#where-are-all-the-source-files)
+    - [Deploy new release](#deploy-new-release)
 - [Related projects](#related-projects)
 
 ### Sort arrays using primitive comparators
@@ -42,7 +43,7 @@ comparator returns `0` for those two values.
 The stable algorithm is based on
 [TimSort](http://en.wikipedia.org/wiki/Timsort), the sorting algorithm
 originally developed for use in Python. The implementation in this library is
-a shameless copy-paste-edit of the latest JDK version of Joshua Bloch's
+a shameless copy-paste-edit of the JDK 8 version of Joshua Bloch's
 `java.util.TimSort` implementation.
 
 The unstable algorithm is based on Java's default primitives `Arrays.sort`
@@ -53,23 +54,28 @@ it may be up to twice as fast as stable sorting.
 Although this library is built for Java 6+, the comparators are more
 convenient when used with Java 8 (as the sample usage illustrates).
 
-#### Sample usage
+### Binary search using primitive comparators
+
+After sorting an array using a provided comparator, binary search can be
+performed using that same comparator. The implementation is another
+copy-paste-edit of the JDK 8 implementation.
+
+### Sample usage
 
 ```java
 int[] arr = ...;
-// Sort in reverse order
-Primitive.sort(arr, (i1, i2) -> Integer.compare(i2, i1));
+
 // Sort by absolute values
 Primitive.sort(arr, (i1, i2) -> Math.abs(i1) - Math.abs(i2));
+
+// Sort in reverse order
+IntComparator revCmp = (i1, i2) -> Integer.compare(i2, i1);
+Primitive.sort(arr, revCmp);
+
+// Binary search in reverse order (now that it's sorted)
+int n = ...;
+Primitive.binarySearch(arr, n, revCmp);
 ```
-
-### Why not `Primitives`?
-
-Since Java's built-in sorting methods are called `Arrays.sort`, it seems
-reasonable to call these ones `Primitives.sort`. I would prefer that as well,
-but several popular libraries (most notably `gson`, `guava`, and
-`jetty-websocket-client-impl`) already define a `Primitives` class, so I opted
-for a name with fewer collisions.
 
 ### Contributing
 
@@ -93,6 +99,10 @@ templates into the Java source files.
 
 The template configuration and source is in
 [`src/main/fmpp`](https://github.com/mintern-java/primitive/tree/master/src/main/fmpp).
+
+#### Deploy new release
+
+    mvn clean deploy -P release
 
 ### Related projects
 
