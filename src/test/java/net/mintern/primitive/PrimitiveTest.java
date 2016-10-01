@@ -6,6 +6,7 @@
 package net.mintern.primitive;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -324,6 +325,35 @@ public class PrimitiveTest {
         int[] expected = Arrays.copyOf(DPQS9_REGRESSION, DPQS9_REGRESSION.length);
         Arrays.sort(expected);
         assertArrayEquals(expected, copy);
+    }
+
+    @Test
+    public void testBinarySearchNaturalOrder() {
+        int[] data = { 1, 2, 3, 4, 5 };
+        IntComparator naturalComparator = new IntComparator() {
+            @Override
+            public int compare(int i1, int i2) {
+                return i1 < i2 ? -1 : i1 == i2 ? 0 : 1;
+            }
+        };
+
+        assertEquals(0, Primitive.binarySearch(data, 1, naturalComparator));
+        assertEquals(3, Primitive.binarySearch(data, 4, naturalComparator));
+        assertEquals(4, Primitive.binarySearch(data, 5, naturalComparator));
+        assertEquals(-1, Primitive.binarySearch(data, 0, naturalComparator));
+        assertEquals(-6, Primitive.binarySearch(data, 6, naturalComparator));
+    }
+
+    @Test
+    public void testBinarySearchReversedOrder() {
+        int[] data = { 6, 5, 4, 3, 2, 1 };
+        IntComparator reverseComparator = new ReverseIntComparator();
+
+        assertEquals(5, Primitive.binarySearch(data, 1, reverseComparator));
+        assertEquals(2, Primitive.binarySearch(data, 4, reverseComparator));
+        assertEquals(0, Primitive.binarySearch(data, 6, reverseComparator));
+        assertEquals(-7, Primitive.binarySearch(data, 0, reverseComparator));
+        assertEquals(-1, Primitive.binarySearch(data, 7, reverseComparator));
     }
 
     private static final class ReverseShortComparator implements ShortComparator {

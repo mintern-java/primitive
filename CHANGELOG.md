@@ -1,3 +1,8 @@
+### 1.3 (2016-09-30)
+
+#### Added
+- Binary search (credit to Dmitry Cherniachenko)
+
 ### 1.2.3 (2016-04-28)
 
 #### Fixed
