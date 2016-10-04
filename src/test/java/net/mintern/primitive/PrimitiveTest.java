@@ -1,6 +1,7 @@
 /*
  * Copyright 2016 Brandon Mintern <brandon@mintern.net>.
  * DPQS9_REGRESSION Copyright 2016 Everlaw <oss@everlaw.com>.
+ * Binary search Copyright 2016 Dmitry Cherniachenko <d.cherniachenko@gmail.com>.
  * License: GPLv2+CE <http://openjdk.java.net/legal/gplv2+ce.html>
  */
 package net.mintern.primitive;
