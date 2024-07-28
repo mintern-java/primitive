@@ -336,24 +336,36 @@ public class PrimitiveTest {
                 return i1 < i2 ? -1 : i1 == i2 ? 0 : 1;
             }
         };
+        IntComparator naturalOrder = IntComparator.naturalOrder();
 
         assertEquals(0, Primitive.binarySearch(data, 1, naturalComparator));
+        assertEquals(0, Primitive.binarySearch(data, 1, naturalOrder));
         assertEquals(3, Primitive.binarySearch(data, 4, naturalComparator));
+        assertEquals(3, Primitive.binarySearch(data, 4, naturalOrder));
         assertEquals(4, Primitive.binarySearch(data, 5, naturalComparator));
+        assertEquals(4, Primitive.binarySearch(data, 5, naturalOrder));
         assertEquals(-1, Primitive.binarySearch(data, 0, naturalComparator));
+        assertEquals(-1, Primitive.binarySearch(data, 0, naturalOrder));
         assertEquals(-6, Primitive.binarySearch(data, 6, naturalComparator));
+        assertEquals(-6, Primitive.binarySearch(data, 6, naturalOrder));
     }
 
     @Test
     public void testBinarySearchReversedOrder() {
         int[] data = { 6, 5, 4, 3, 2, 1 };
         IntComparator reverseComparator = new ReverseIntComparator();
+        IntComparator reverseOrder = IntComparator.reverseOrder();
 
         assertEquals(5, Primitive.binarySearch(data, 1, reverseComparator));
+        assertEquals(5, Primitive.binarySearch(data, 1, reverseOrder));
         assertEquals(2, Primitive.binarySearch(data, 4, reverseComparator));
+        assertEquals(2, Primitive.binarySearch(data, 4, reverseOrder));
         assertEquals(0, Primitive.binarySearch(data, 6, reverseComparator));
+        assertEquals(0, Primitive.binarySearch(data, 6, reverseOrder));
         assertEquals(-7, Primitive.binarySearch(data, 0, reverseComparator));
+        assertEquals(-7, Primitive.binarySearch(data, 0, reverseOrder));
         assertEquals(-1, Primitive.binarySearch(data, 7, reverseComparator));
+        assertEquals(-1, Primitive.binarySearch(data, 7, reverseOrder));
     }
 
     private static final class ReverseShortComparator implements ShortComparator {

@@ -4,5 +4,6 @@
 removeExtensions: ft
 data: {
     PRIMITIVES: [boolean, byte, char, double, float, int, long, short]
+    BOXED: [Boolean, Byte, Character, Double, Float, Integer, Long, Short]
     PACKAGE: net.mintern.primitive
 }

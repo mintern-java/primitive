@@ -1,6 +1,7 @@
 <@pp.dropOutputFile />
 <#list PRIMITIVES as type>
 <#assign Type = type?capitalize>
+<#assign Boxed = BOXED[type?index]>
 <#assign v = type[0]>
 <@pp.nestOutputFile name = "comparators/${Type}Comparator.java">
 /*
@@ -11,10 +12,8 @@ package ${PACKAGE}.comparators;
 
 /**
  * A comparison function that imposes total ordering on {@code ${type}} values.
- * <p>
- * This is a {@code @FunctionalInterface} even though it isn't declared as one,
- * so that it can be used in Java 6+.
  */
+@FunctionalInterface
 public interface ${Type}Comparator {
 
     /**
@@ -52,6 +51,22 @@ public interface ${Type}Comparator {
      *      respectively
      */
     int compare(${type} ${v}1, ${type} ${v}2);
+
+    /**
+     * Returns a comparator that compares {@code ${type}} values in natural order,
+     * as defined by {@link ${Boxed}#compare(${type}, ${type})}.
+     */
+    static ${Type}Comparator naturalOrder() {
+        return ${Boxed}::compare;
+    }
+
+    /**
+     * Returns a comparator that compares {@code ${type}} values in the reverse of
+     * {@link #naturalOrder()}.
+     */
+    static ${Type}Comparator reverseOrder() {
+        return (${v}1, ${v}2) -> ${Boxed}.compare(${v}2, ${v}1);
+    }
 }
 </@pp.nestOutputFile>
 </#list>
