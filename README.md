@@ -3,7 +3,7 @@
 Provides utility methods for functionality related to primitive types.
 This currently includes sorting and searching based on custom comparators.
 
-To include the library in your project (Java 6+ supported), add the following
+To include the library in your project (Java 8+ supported), add the following
 to your POM:
 
 ```xml
@@ -49,9 +49,6 @@ The unstable algorithm is based on Java's default primitives `Arrays.sort`
 implementation, a [Dual-Pivot
 Quicksort](http://en.wikipedia.org/wiki/Quicksort#Variants). For some inputs,
 it may be up to twice as fast as stable sorting.
-
-Although this library is built for Java 6+, the comparators are more
-convenient when used with Java 8 (as the sample usage illustrates).
 
 ### Binary search using primitive comparators
 
