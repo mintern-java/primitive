@@ -1,3 +1,11 @@
+### 2.0 (2024-07-28)
+
+#### Added
+- `naturalOrder()` and `reverseOrder()` to comparators (#11)
+
+#### Changed
+- Discontinued support for Java 6 and 7
+
 ### 1.3 (2016-09-30)
 
 #### Added
