@@ -6,10 +6,10 @@
  */
 package net.mintern.primitive;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -22,8 +22,7 @@ import net.mintern.primitive.comparators.IntComparator;
 import net.mintern.primitive.comparators.LongComparator;
 import net.mintern.primitive.comparators.ShortComparator;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PrimitiveTest {
 
@@ -97,7 +96,7 @@ public class PrimitiveTest {
                 byte[] a = Arrays.copyOf(bytes[i], bytes[i].length);
                 Primitive.sort(a, null, stable);
                 for (int j = 1; j < a.length; j++) {
-                    assertTrue(name, a[j - 1] <= a[j]);
+                    assertTrue(a[j - 1] <= a[j], name);
                 }
             }
         }
@@ -114,7 +113,7 @@ public class PrimitiveTest {
                     return 0;
                 }
             });
-            assertArrayEquals(name, bytes[i], a);
+            assertArrayEquals(bytes[i], a, name);
         }
     }
 
@@ -131,7 +130,7 @@ public class PrimitiveTest {
                     }
                 });
                 for (int j = 1; j < a.length; j++) {
-                    assertTrue(name, a[j - 1] <= a[j]);
+                    assertTrue(a[j - 1] <= a[j], name);
                 }
             }
         }
@@ -153,7 +152,7 @@ public class PrimitiveTest {
                     Arrays.sort(expected);
                     reverse(expected);
 
-                    Assert.assertArrayEquals(actual, expected);
+                    assertArrayEquals(actual, expected);
                 }
             }
         }
@@ -178,7 +177,7 @@ public class PrimitiveTest {
                     Arrays.sort(expected);
                     reverse(expected);
 
-                    Assert.assertArrayEquals(actual, expected);
+                    assertArrayEquals(actual, expected);
                 }
             }
         }
@@ -203,7 +202,7 @@ public class PrimitiveTest {
                     Arrays.sort(expected);
                     reverse(expected);
 
-                    Assert.assertArrayEquals(actual, expected);
+                    assertArrayEquals(actual, expected);
                 }
             }
         }
@@ -228,7 +227,7 @@ public class PrimitiveTest {
                     Arrays.sort(expected);
                     reverse(expected);
 
-                    Assert.assertArrayEquals(actual, expected);
+                    assertArrayEquals(actual, expected);
                 }
             }
         }
@@ -250,7 +249,7 @@ public class PrimitiveTest {
                     Arrays.sort(expected);
                     reverse(expected);
 
-                    Assert.assertArrayEquals(actual, expected, 0.0f);
+                    assertArrayEquals(actual, expected, 0.0f);
                 }
             }
         }
@@ -272,7 +271,7 @@ public class PrimitiveTest {
                     Arrays.sort(expected);
                     reverse(expected);
 
-                    Assert.assertTrue(Arrays.equals(actual, expected));
+                    assertTrue(Arrays.equals(actual, expected));
                 }
             }
         }
