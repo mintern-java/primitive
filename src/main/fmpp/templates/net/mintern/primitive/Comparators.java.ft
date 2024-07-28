@@ -37,7 +37,7 @@ public interface ${Type}Comparator {
      *  <li>{@code x > 0}: 1
      * </ul>
 <#if type = "float" || type = "double">
-     * <h3>Important Note</h3>
+     * <h4>Important Note</h4>
      * A floating-point compare implementation must be careful to maintain
      * total ordering, in particular when comparing -0.0, 0.0, @{code NaN},
      * {@link ${Type}#NEGATIVE_INFINITY}, and {@link ${Type}#POSITIVE_INFINITY}
@@ -53,16 +53,16 @@ public interface ${Type}Comparator {
     int compare(${type} ${v}1, ${type} ${v}2);
 
     /**
-     * Returns a comparator that compares {@code ${type}} values in natural order,
-     * as defined by {@link ${Boxed}#compare(${type}, ${type})}.
+     * @return a comparator that compares {@code ${type}} values in natural order,
+     *      as defined by {@link ${Boxed}#compare(${type}, ${type})}.
      */
     static ${Type}Comparator naturalOrder() {
         return ${Boxed}::compare;
     }
 
     /**
-     * Returns a comparator that compares {@code ${type}} values in the reverse of
-     * {@link #naturalOrder()}.
+     * @return a comparator that compares {@code ${type}} values in the reverse of
+     *      {@link #naturalOrder()}.
      */
     static ${Type}Comparator reverseOrder() {
         return (${v}1, ${v}2) -> ${Boxed}.compare(${v}2, ${v}1);

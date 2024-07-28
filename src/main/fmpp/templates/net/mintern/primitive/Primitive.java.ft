@@ -1,5 +1,5 @@
 /*
- * Copyright 2016, Brandon Mintern <brandon@mintern.net>. All rights reserved.
+ * Copyright 2024 Brandon Mintern <brandon@mintern.net>. All rights reserved.
  * Copyright 2016, Dmitry Cherniachenko <d.cherniachenko@gmail.com>. All rights reserved.
  * Copyright (c) 1997, 2014, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -219,13 +219,13 @@ public final class Primitive {
      * @param a the array to be searched
      * @param key the value to be searched for
      * @param c the comparator by which the array is ordered.  A
-     *        <tt>null</tt> value indicates that the elements'
+     *        {@code null} value indicates that the elements'
      *        natural ordering should be used.
      * @return index of the search key, if it is contained in the array;
-     *         otherwise, <tt>(-(<i>insertion point</i>) - 1)</tt>.  The
+     *         otherwise, {@code (-(<i>insertion point</i>) - 1)}.  The
      *         <i>insertion point</i> is defined as the point at which the
      *         key would be inserted into the array: the index of the first
-     *         element greater than the key, or <tt>a.length</tt> if all
+     *         element greater than the key, or {@code a.length} if all
      *         elements in the array are less than the specified key.  Note
      *         that this guarantees that the return value will be &gt;= 0 if
      *         and only if the key is found.
@@ -253,17 +253,17 @@ public final class Primitive {
      * @param toIndex the index of the last element (exclusive) to be searched
      * @param key the value to be searched for
      * @param c the comparator by which the array is ordered.  A
-     *        <tt>null</tt> value indicates that the elements'
+     *        {@code null} value indicates that the elements'
      *        natural ordering should be used.
      * @return index of the search key, if it is contained in the array
      *         within the specified range;
-     *         otherwise, <tt>(-(<i>insertion point</i>) - 1)</tt>.  The
+     *         otherwise, {@code (-(<i>insertion point</i>) - 1)}.  The
      *         <i>insertion point</i> is defined as the point at which the
      *         key would be inserted into the array: the index of the first
-     *         element greater than the key, or <tt>toIndex</tt> if all
+     *         element greater than the key, or {@code toIndex} if all
      *         elements in the range are less than the specified key.  Note
      *         that this guarantees that the return value will be &gt;=
-     *         <tt>fromIndex</tt> if and only if the key is found.
+     *         {@code fromIndex} if and only if the key is found.
      */
     public static int binarySearch(${type}[] a, int fromIndex, int toIndex, ${type} key,
             ${Cmp} c) {
